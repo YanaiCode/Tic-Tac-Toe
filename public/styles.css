@@ -1,0 +1,14 @@
+body, html {
+    margin: 0 auto;
+    /* overflow: hidden; */
+}
+#container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+#chat-container{
+    flex-grow: 1;
+    width: 25%
+    /* background-color: black; */
+}
