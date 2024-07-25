@@ -26,7 +26,8 @@ app.get('/game/:id', (req, res) => {
 });
 io.on('connection', (socket) => {
   // socket.join(roomID);
-  socket.on("join room", async (roomID, socketXID, socketOID) => { 
+  socket.on("join room", async (roomID, socketXID, socketOID) => {
+    console.log("working")
     for (let room of socket.rooms) {
       socket.leave(room)
     }

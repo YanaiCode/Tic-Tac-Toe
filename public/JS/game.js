@@ -1,15 +1,17 @@
 import Square from "./square.js"
 import Input from "./input.js"
 //approximate font size centering
-//make it so that a player can only play on their turn
-//wincons
 //fix centering for board sizes > 3
-//text for winning 
+//text for winning /
 //chat
-//save state
-//modular board size
+//save state 
+//modular board size /
 //remove elements (removeChild) 
 //spectator
+//when you refresh its x's turn
+//board resizing on refresh
+//18 win cons/squares
+//o got the broadcast 
 
 export default class Game{
     constructor(w, h) {

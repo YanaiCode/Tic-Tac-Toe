@@ -5,6 +5,8 @@ const ctx = canv.getContext("2d")
 canv.width = window.innerWidth * .75
 canv.height = window.innerHeight
 
+let board_created = false
+
 let g = new Game(canv.width, canv.height)
 let socket = io()
 g.socket = socket
@@ -51,11 +53,19 @@ socket.on("start game", () => {
 
 socket.on("set board size", size => { //one the server sends
     g.board_size = size
-    g.createBoard()
+    if (board_created == false) {
+        console.log("testing")
+        g.createBoard()
+    }
 })
 
 socket.on("x rejoins", (boardState) => {
+    console.log(boardState)
     g.playerTeam = "x"
+    socket.emit("set board size", Math.sqrt(boardState.length))
+    g.createBoard()
+    board_created = true
+    g.boardsize = parseInt(Math.sqrt(boardState.length))
     for (let i = 0; i < boardState.length; i++) {
         g.squares[i].piece = boardState[i]
     }
@@ -63,8 +73,13 @@ socket.on("x rejoins", (boardState) => {
 })
 
 socket.on("o rejoins", (boardState) => {
+    console.log(boardState)
     g.playerTeam = "o"
-    for (i = 0; i < boardState.length; i++) {
+    socket.emit("set board size", Math.sqrt(boardState.length))
+    g.createBoard()
+    board_created = true
+    g.boardsize = parseInt(Math.sqrt(boardState.length))
+    for (let i = 0; i < boardState.length; i++) {
         g.squares[i].piece = boardState[i]
     }
 })
