@@ -42,13 +42,11 @@ socket.on("start game", () => {
             if (e.key == "Enter") {
                 let size = boardInput.value
                 socket.emit("set board size", size)
-                g.boardsize = parseInt(size)
                 
             }
         })
         chatContainer.appendChild(boardInput)
     }
-    socket.emit("give ids", localStorage.getItem("playerID"), g.playerTeam)
 })
 
 socket.on("set board size", size => { //one the server sends
@@ -59,26 +57,22 @@ socket.on("set board size", size => { //one the server sends
     }
 })
 
-socket.on("x rejoins", (boardState) => {
+socket.on("x rejoins", (boardState, boardsize) => {
     console.log(boardState)
     g.playerTeam = "x"
-    socket.emit("set board size", Math.sqrt(boardState.length))
+    g.board_size = boardsize
     g.createBoard()
-    board_created = true
-    g.boardsize = parseInt(Math.sqrt(boardState.length))
     for (let i = 0; i < boardState.length; i++) {
         g.squares[i].piece = boardState[i]
     }
 
 })
 
-socket.on("o rejoins", (boardState) => {
-    console.log(boardState)
+socket.on("o rejoins", (boardState, boardsize) => {
+    console.log(boardState) 
     g.playerTeam = "o"
-    socket.emit("set board size", Math.sqrt(boardState.length))
+    g.board_size = boardsize
     g.createBoard()
-    board_created = true
-    g.boardsize = parseInt(Math.sqrt(boardState.length))
     for (let i = 0; i < boardState.length; i++) {
         g.squares[i].piece = boardState[i]
     }

@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
   socket.on("join room", async (roomID, socketXID, socketOID) => {
     console.log("working")
     for (let room of socket.rooms) {
-      socket.leave(room)
+      socket.leave(room)  //whenever someone joins they auto-join room, this disconnects
     }
     socket.join(roomID)
     let sockets = await io.in(roomID).fetchSockets();
@@ -40,10 +40,10 @@ io.on('connection', (socket) => {
   }
   else {
     if (socketXID == sess.playerXID) {
-      socket.emit("x rejoins", sess.boardState)
+      socket.emit("x rejoins", sess.boardState, sess.boardStateSize)
     }
     if (socketOID == sess.playerOID) {
-      socket.emit("o rejoins", sess.boardState)
+      socket.emit("o rejoins", sess.boardState, sess.boardStateSize)
     }
   }
   if (sess != null) {
@@ -79,16 +79,9 @@ io.on('connection', (socket) => {
 
   socket.on("set board size", size => {
     let [roomID] = socket.rooms
-    socket.to(roomID).emit("set board size", size)
-  })
-  socket.on("give ids", (id, team) => {
-    let [roomID] = socket.rooms
     let session = SessManager.getSession(roomID)
-    if (team == "x") {
-      session.xid = id
-    } else {
-      session.oid = id
-    }
+    session.boardStateSize = size
+    socket.to(roomID).emit("set board size", size)
   })
 });
 // app.get('/game', (req, res) => {

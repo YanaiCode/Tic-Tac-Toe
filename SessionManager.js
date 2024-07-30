@@ -21,6 +21,7 @@ class Session {
         this.playerXID = null
         this.playerOID = null
         this.gameStarted = false
+        this.boardStateSize = null
         for (let i = 0; i < boardSize*boardSize; i++) {
             this.boardState.push("empty")
         }

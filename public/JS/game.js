@@ -9,8 +9,6 @@ import Input from "./input.js"
 //remove elements (removeChild) 
 //spectator
 //when you refresh its x's turn
-//board resizing on refresh
-//18 win cons/squares
 //o got the broadcast 
 
 export default class Game{
