@@ -57,29 +57,37 @@ socket.on("set board size", size => { //one the server sends
     }
 })
 
-socket.on("x rejoins", (boardState, boardsize) => {
+socket.on("x rejoins", (boardState, boardsize, turn) => {
     console.log(boardState)
     g.playerTeam = "x"
     g.board_size = boardsize
+    g.turn = turn
     g.createBoard()
     for (let i = 0; i < boardState.length; i++) {
         g.squares[i].piece = boardState[i]
+        if (boardState[i] != null) {
+            g.squares[i].isClicked = true
+        }
     }
 
 })
 
-socket.on("o rejoins", (boardState, boardsize) => {
+socket.on("o rejoins", (boardState, boardsize, turn) => {
     console.log(boardState) 
     g.playerTeam = "o"
     g.board_size = boardsize
+    g.turn = turn
     g.createBoard()
     for (let i = 0; i < boardState.length; i++) {
         g.squares[i].piece = boardState[i]
+        if (boardState[i] != null) {
+            g.squares[i].isClicked = true
+        }
     }
 })
 
-socket.on("made turn", squareNum => {
-    g.turn += 1
+socket.on("made turn", (squareNum, turn) => {
+    g.turn = turn
     if (g.turn%2==0) {
         g.squares[squareNum].piece = "x"
     }

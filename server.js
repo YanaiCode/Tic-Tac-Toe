@@ -38,12 +38,13 @@ io.on('connection', (socket) => {
       SessManager.addSession(roomID)
       sess = SessManager.getSession(roomID)
   }
+
   else {
     if (socketXID == sess.playerXID) {
-      socket.emit("x rejoins", sess.boardState, sess.boardStateSize)
+      socket.emit("x rejoins", sess.boardState, sess.boardStateSize, sess.turn)
     }
     if (socketOID == sess.playerOID) {
-      socket.emit("o rejoins", sess.boardState, sess.boardStateSize)
+      socket.emit("o rejoins", sess.boardState, sess.boardStateSize, sess.turn)
     }
   }
   if (sess != null) {
@@ -71,8 +72,10 @@ io.on('connection', (socket) => {
   socket.on("next turn", (squareNum, player) => {
     let [roomID] = socket.rooms;
     let session = SessManager.getSession(roomID)
+    session.turn += 1
+    let turn = session.turn
     session.setSquare(squareNum, player)
-    socket.to(roomID).emit("made turn", squareNum)
+    socket.to(roomID).emit("made turn", squareNum, turn)
     console.log(session.boardState)
     console.log(session.xid, session.oid)
   });

@@ -2,7 +2,7 @@ import Square from "./square.js"
 import Input from "./input.js"
 //approximate font size centering
 //fix centering for board sizes > 3
-//text for winning /
+//text for winning 
 //chat
 //save state 
 //modular board size /
@@ -10,6 +10,8 @@ import Input from "./input.js"
 //spectator
 //when you refresh its x's turn
 //o got the broadcast 
+//refreshing after winning brings it back to normal board
+//squares reclickable after refresh
 
 export default class Game{
     constructor(w, h) {
