@@ -26,6 +26,7 @@ class Session {
             this.boardState.push("empty")
         }
         this.turn = 1
+        this.winner = null
     }
     setSquare(squareID, playerTeam) {
         this.boardState[squareID] = playerTeam

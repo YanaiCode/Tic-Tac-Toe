@@ -2,16 +2,11 @@ import Square from "./square.js"
 import Input from "./input.js"
 //approximate font size centering
 //fix centering for board sizes > 3
-//text for winning 
+//text for winning
+
+
 //chat
-//save state 
-//modular board size /
-//remove elements (removeChild) 
 //spectator
-//when you refresh its x's turn
-//o got the broadcast 
-//refreshing after winning brings it back to normal board
-//squares reclickable after refresh
 
 export default class Game{
     constructor(w, h) {
@@ -24,7 +19,7 @@ export default class Game{
         this.square_width = 0.4*w/this.board_size
         this.square_height = 0.4*h/this.board_size
         this.game_over = false
-        this.playerTeam = "o"
+        this.playerTeam = null
         this.winner = null
 
 
@@ -66,8 +61,8 @@ export default class Game{
                 ctx.fillStyle = (this.winner == "x" ? "red" : "blue")
                 ctx.fillRect(0, 0, this.screenWidth, this.screenHeight)
                 ctx.fillStyle = "black"
-                ctx.fillText(this.winner + " is the winner", 0, 0)
-                
+                let text = ctx.measureText(this.winner + " is the winner"); // TextMetrics object
+                ctx.fillText(this.winner + " is the winner", (0.5 * this.screenWidth) - (.5 * text.width) , (0.5 * this.screenHeight))
             }
         } 
     }
@@ -120,6 +115,7 @@ export default class Game{
             }
             if (check_fail == false) {
                 this.winner = this.squares[this.winCons[i][0]].piece 
+                this.socket.emit("winner", this.winner)
                 console.log(this.squares[this.winCons[i][0]].piece + " is the winner")
                 this.game_over = true
             }

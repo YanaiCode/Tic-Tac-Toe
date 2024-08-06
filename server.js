@@ -41,10 +41,13 @@ io.on('connection', (socket) => {
 
   else {
     if (socketXID == sess.playerXID) {
-      socket.emit("x rejoins", sess.boardState, sess.boardStateSize, sess.turn)
+      socket.emit("x rejoins", sess.boardState, sess.boardStateSize, sess.turn, sess.winner)
     }
-    if (socketOID == sess.playerOID) {
-      socket.emit("o rejoins", sess.boardState, sess.boardStateSize, sess.turn)
+    else if (socketOID == sess.playerOID) {
+      socket.emit("o rejoins", sess.boardState, sess.boardStateSize, sess.turn, sess.winner)
+    }
+    else {
+      socket.emit("spectator rejoins", sess.boardState, sess.boardStateSize, sess.turn, sess.winner)
     }
   }
   if (sess != null) {
@@ -60,6 +63,10 @@ io.on('connection', (socket) => {
         socket.emit("give o id", OID)
         sess.playerOID = OID
         sess.gameStarted = true
+        console.log("testt")
+      }
+      if (sockets.length > 2) {
+        socket.emit("spectator")
       }
     }
   }
@@ -69,15 +76,22 @@ io.on('connection', (socket) => {
     // console.log("socket id is: " + socket.id)
   });
 
+  socket.on("winner", winner => {
+    let [roomID] = socket.rooms;
+    let session = SessManager.getSession(roomID)
+    session.winner = winner 
+  }) 
+
   socket.on("next turn", (squareNum, player) => {
     let [roomID] = socket.rooms;
     let session = SessManager.getSession(roomID)
     session.turn += 1
     let turn = session.turn
+
     session.setSquare(squareNum, player)
     socket.to(roomID).emit("made turn", squareNum, turn)
-    console.log(session.boardState)
-    console.log(session.xid, session.oid)
+    // console.log(session.boardState)
+    // console.log(session.xid, session.oid)
   });
 
   socket.on("set board size", size => {

@@ -51,6 +51,7 @@ export default class Square{
         if (mx > sx && mx < sx + ss && my > sy && my < sy + ss && !this.gameObj.input.mouseDown && !this.isClicked && this.isClicking && !g.game_over) {
             if (g.turn % 2 == 0 && g.playerTeam == "o" || g.turn % 2 == 1 && g.playerTeam == "x") {
                 this.gameObj.socket.emit("next turn", this.number, this.gameObj.playerTeam)
+                console.log(g.playerTeam)
             }
             // if (this.gameObj.turn%2==0) {
             //     this.piece = "o"
